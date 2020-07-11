@@ -1,0 +1,43 @@
+﻿@page "/tasks"
+
+@inject Domain.DataAccess.Mongo.CrudHelpers.TodoItemHelper todoService
+@using Domain.Models;
+
+
+<h3>Tasks</h3>
+
+@if(tasks == null)
+{
+    <p><em>Loading Tasks...</em></p>
+}
+else
+{
+
+    @if(tasks.Count < 1)
+    {
+        <h2>No tasks found...</h2>
+    }
+
+    foreach (var task in tasks)
+    {
+        <div class="card">
+            <div class="card-title">
+                @task.Id : @task.Title
+            </div>
+            <div class="card-content">
+                @task.Description
+            </div>
+        </div>
+    }
+}
+
+@code {
+
+    private List<TodoItem> tasks;
+
+    protected override void OnInitialized()
+    {
+        tasks = todoService.GetTodoItems();
+    }
+
+}
